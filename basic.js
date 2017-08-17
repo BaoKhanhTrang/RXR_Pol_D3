@@ -70,7 +70,7 @@ var scaleMA = d3.scaleLinear()
 //     console.log(rows);
 // });
 // --- Parse csv to row and process each
-d3.csv('pp.csv',function(error, rows) {
+d3.csv('pp2.csv',function(error, rows) {
 
     rows.forEach(function(d){
       var value = [];
