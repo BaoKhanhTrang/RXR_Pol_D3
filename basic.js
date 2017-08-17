@@ -62,7 +62,7 @@ var scaleMA = d3.scaleLinear()
     .range([h-10,0])
     .domain(maR);
 
-var yAxis = d3.axisLeft(scaleRXR)
+var yAxis = d3.axisRight(d3.scaleLinear().range([h-10,0]).domain([0,100]))
               .ticks(11);
 
 
@@ -70,15 +70,15 @@ var yAxis = d3.axisLeft(scaleRXR)
 
 // var x = [0,10, 20, 30, 40,50,60,70, 80,90, 100];
 
-var label = [{"x":w/10, "y":10,"t":"RXR"} ,
-             {"x":w*2/10, "y":10,"t":"Pol_TSS"} ,
-             {"x":w*3/10, "y":10,"t":"Pol_GB"} ,
-             {"x":w*4/10, "y":10,"t":"Pol_TE1K"} ,
-             {"x":w*5/10, "y":10,"t":"Pol_TE2K"} ,
-             {"x":w*6/10, "y":10,"t":"Pol_TE3K"} ,
-             {"x":w*7/10, "y":10,"t":"Pol_TE4K"} ,
-             {"x":w*8/10, "y":10,"t":"Pol_TE5K"} ,
-             {"x":w*9/10, "y":10,"t":"mRNA"}];
+var label = [{"x":w/10  , "col":"#5b14ff","t":"RXR"} ,
+             {"x":w*2/10, "col":"#ff0009","t":"Pol_TSS"} ,
+             {"x":w*3/10, "col":"#ff6333","t":"Pol_GB"} ,
+             {"x":w*4/10, "col":"#ff952a","t":"Pol_TE1K"} ,
+             {"x":w*5/10, "col":"#ffc228","t":"Pol_TE2K"} ,
+             {"x":w*6/10, "col":"#fff30e","t":"Pol_TE3K"} ,
+             {"x":w*7/10, "col":"#c5ff15","t":"Pol_TE4K"} ,
+             {"x":w*8/10, "col":"#5eff01","t":"Pol_TE5K"} ,
+             {"x":w*9/10, "col":"#04ffd9","t":"mRNA"}];
 
 // d3.queue()
 //   .defer(d3.csv, 'pp.csv', parse)
@@ -121,11 +121,11 @@ var text = plot.selectAll("text")
 
 var textLabel = text
                   .attr("x", function(d,i){return d.x-10;})
-                  .attr("y", function(d,i) {return d.y })
+                  .attr("y", 5)
                   .text( function (d,i) { return d.t; })
                   .attr("font-family", "sans-serif")
                   .attr("font-size", "12px")
-                  .attr("fill", "black");
+                  .attr("fill", function (d,i) { return d.col; });
 
 plot.append('g').call(yAxis);
 
