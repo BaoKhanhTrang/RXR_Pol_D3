@@ -1,5 +1,5 @@
 // --- Margin convention
-var M = {top:10, right:0, bottom:50, left:0};
+var M = {top:5, right:0, bottom:5, left:10};
 var outerWidth = document.getElementById('canvas').clientWidth,
     outerHeight = document.getElementById('canvas').clientHeight;
 
@@ -27,42 +27,58 @@ var te4kR = [0,142.1943];
 var te5kR = [0,141.2014];
 var maR = [2.499556 , 13.92267]
 var scaleRXR = d3.scaleLinear()
-  .range([h, 0])
+  .range([h-10, 0])
   .domain(rxrR);
 
 var scaleTSS = d3.scaleLinear()
-  .range([h, 0])
+  .range([h-10, 0])
   .domain(tssR);
 
 var scaleGB = d3.scaleLinear()
-  .range([h, 0])
+  .range([h-10, 0])
   .domain(gbR);
 
 var scaleTE1K = d3.scaleLinear()
-    .range([h, 0])
+    .range([h-10, 0])
     .domain(te1kR);
 
 var scaleTE2K = d3.scaleLinear()
-    .range([h, 0])
+    .range([h-10, 0])
     .domain(te2kR);
 
 var scaleTE3K = d3.scaleLinear()
-    .range([h, 0])
+    .range([h-10, 0])
     .domain(te3kR);
 
 var scaleTE4K = d3.scaleLinear()
-    .range([h, 0])
+    .range([h-10, 0])
     .domain(te4kR);
 
 var scaleTE5K = d3.scaleLinear()
-    .range([h, 0])
+    .range([h-10, 0])
     .domain(te5kR);
 
 var scaleMA = d3.scaleLinear()
-    .range([h,0])
+    .range([h-10,0])
     .domain(maR);
 
+var yAxis = d3.axisLeft(scaleRXR)
+              .ticks(11);
 
+
+
+
+// var x = [0,10, 20, 30, 40,50,60,70, 80,90, 100];
+
+var label = [{"x":w/10, "y":10,"t":"RXR"} ,
+             {"x":w*2/10, "y":10,"t":"Pol_TSS"} ,
+             {"x":w*3/10, "y":10,"t":"Pol_GB"} ,
+             {"x":w*4/10, "y":10,"t":"Pol_TE1K"} ,
+             {"x":w*5/10, "y":10,"t":"Pol_TE2K"} ,
+             {"x":w*6/10, "y":10,"t":"Pol_TE3K"} ,
+             {"x":w*7/10, "y":10,"t":"Pol_TE4K"} ,
+             {"x":w*8/10, "y":10,"t":"Pol_TE5K"} ,
+             {"x":w*9/10, "y":10,"t":"mRNA"}];
 
 // d3.queue()
 //   .defer(d3.csv, 'pp.csv', parse)
@@ -88,7 +104,7 @@ d3.csv('pp2.csv',function(error, rows) {
       var x = [w/10,w*2/10,w*3/10,w*4/10,w*5/10,w*6/10,w*7/10,w*8/10,w*9/10];
       var line = d3.line()
         .x(function(d,i){return (x[i]);})
-        .y(function(d){return d!=NaN ;});
+        .y(function(d){return d ;});
 
         var plotg = plot.append("path")
                     // .attr("class", "line")
@@ -98,7 +114,20 @@ d3.csv('pp2.csv',function(error, rows) {
                     .attr("fill","none");
     });
 });
+var text = plot.selectAll("text")
+            .data(label)
+            .enter()
+            .append("text");
 
+var textLabel = text
+                  .attr("x", function(d,i){return d.x-10;})
+                  .attr("y", function(d,i) {return d.y })
+                  .text( function (d,i) { return d.t; })
+                  .attr("font-family", "sans-serif")
+                  .attr("font-size", "12px")
+                  .attr("fill", "black");
+
+plot.append('g').call(yAxis);
 
 function parse(d){
 	return {
