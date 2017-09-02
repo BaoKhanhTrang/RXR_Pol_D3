@@ -12,13 +12,14 @@
     }
 
     #chart {
-      height: 500px;
-      font-size: 11px;
-      width: 960px;
+      height: 800px;
+      font-size: 12px;
+      width: 1500px;
       margin: auto;
     }
 
     .node rect {
+      cursor: move;
       fill-opacity: .9;
       shape-rendering: crispEdges;
     }
@@ -30,7 +31,7 @@
     .link {
       fill: none;
       stroke: #000;
-      stroke-opacity: .12;
+      stroke-opacity: .05;
     }
 
     .gradient-link {
@@ -58,8 +59,8 @@
         bottom: 6,
         left: 1
       },
-      width = 960 - margin.left - margin.right,
-      height = 500 - margin.top - margin.bottom;
+      width = 1500 - margin.left - margin.right,
+      height = 800 - margin.top - margin.bottom;
 
     var formatNumber = d3.format(",.0f"),
       format = function(d) {
@@ -80,7 +81,7 @@
 
     var path = sankey.link();
 
-    d3.json("sankey.json", function(error,data) {
+    d3.json("sankey2.json", function(error,data) {
       if (error) {
         console.log(error);
         alert(error); // I would suggest a more sophisticated UI that just
@@ -201,6 +202,14 @@
               setDash.call(this, d);
             });
         });
+        // .call(d3.drag()
+        // .subject(function(d) {
+        //   return d;
+        // })
+        // .on("start", function() {
+        //   this.parentNode.appendChild(this);
+        // })
+        // .on("drag", dragmove));
 
 
       node.append("rect")
@@ -233,6 +242,14 @@
         .attr("x", 6 + sankey.nodeWidth())
         .attr("text-anchor", "start");
 
+      function dragmove(d) {
+        d3.select(this)
+          .attr("transform","translate("
+               + d.x + ","
+               + (d.y = Math.max(0, Math.min(height - d.dy, d3.event.y))) + ")");
+                 sankey.relayout();
+                 link.attr("d", path);
+  }
     }});
   </script>
 
